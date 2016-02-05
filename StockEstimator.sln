@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StockEstimator.Logic", "StockEstimator.Logic\StockEstimator.Logic.fsproj", "{F255F413-25DA-44C6-92F2-6481CC8065EB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockEstimator.ConsoleApp", "StockEstimator.ConsoleApp\StockEstimator.ConsoleApp.csproj", "{0D188E86-8A3A-4A6B-AE8A-F141BF690971}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StockEstimator.Charts", "StockEstimator.Charts\StockEstimator.Charts.fsproj", "{88B5BBCC-7E70-4D94-901E-DBD5839DDDF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{0D188E86-8A3A-4A6B-AE8A-F141BF690971}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D188E86-8A3A-4A6B-AE8A-F141BF690971}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D188E86-8A3A-4A6B-AE8A-F141BF690971}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88B5BBCC-7E70-4D94-901E-DBD5839DDDF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88B5BBCC-7E70-4D94-901E-DBD5839DDDF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88B5BBCC-7E70-4D94-901E-DBD5839DDDF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88B5BBCC-7E70-4D94-901E-DBD5839DDDF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

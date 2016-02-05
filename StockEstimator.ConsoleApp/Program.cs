@@ -31,8 +31,6 @@ namespace StockEstimator.ConsoleApp
             var futureDate = DateTime.Now.AddDays(5);
             var estimatedPrice = stockData.GetEstimatedPriceForDate("MSFT", futureDate, DateTime.Now.AddMonths(-4));
             Console.WriteLine($"Estimated price for {futureDate.ToShortDateString()} is {string.Format("{0:.00}", estimatedPrice)}");
-
-            StockCharts.DrawLine();
         }
     }
 }

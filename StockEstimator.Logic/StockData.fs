@@ -1,8 +1,7 @@
 ﻿namespace StockEstimator.Logic
 
-open FSharp.Data
-open MathNet
 open System
+open FSharp.Data
 
 // this module use yahoo finance API: http://www.jarloo.com/yahoo_finance/
 // for alternative API check: https://www.quandl.com/blog/api-for-stock-data
@@ -38,7 +37,7 @@ type StockData() =
 
         let firstDate = (stockData |> Seq.last).Date
         
-        // refactor to one-liner
+        // TODO: refactor to one-liner
         let adjData = stockData |> Seq.map (fun x -> (x.Date - firstDate).TotalDays, float x.Close)
         let xData = adjData |> Seq.map fst |> Seq.toArray
         let yData = adjData |> Seq.map snd |> Seq.toArray
