@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockEstimator.ConsoleApp",
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StockEstimator.Charts", "StockEstimator.Charts\StockEstimator.Charts.fsproj", "{88B5BBCC-7E70-4D94-901E-DBD5839DDDF3}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StockEstimator.Tests", "StockEstimator.Tests\StockEstimator.Tests.fsproj", "{24D58CF7-73C8-4968-B637-AF238FEE2C57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{88B5BBCC-7E70-4D94-901E-DBD5839DDDF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88B5BBCC-7E70-4D94-901E-DBD5839DDDF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88B5BBCC-7E70-4D94-901E-DBD5839DDDF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24D58CF7-73C8-4968-B637-AF238FEE2C57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24D58CF7-73C8-4968-B637-AF238FEE2C57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24D58CF7-73C8-4968-B637-AF238FEE2C57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24D58CF7-73C8-4968-B637-AF238FEE2C57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
