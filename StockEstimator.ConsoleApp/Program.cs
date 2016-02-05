@@ -14,14 +14,14 @@ namespace StockEstimator.ConsoleApp
             var stockData = new StockData();
 
             // fetching stock data
-            var msftRows = stockData.getStockData("MSFT");
+            var msftRows = stockData.GetStockData("MSFT");
             //foreach (var row in msftRows)
             //{
             //    Console.WriteLine($"{row.Key}: {string.Format("{0:.00}", float.Parse(row.Value))}");
             //}
 
             // fetching stock data for date/time range
-            var msftRowsForLastYear = stockData.getStockDataForDateRange("MSFT", DateTime.Now.AddYears(-1), DateTime.Now);
+            var msftRowsForLastYear = stockData.GetStockDataForDateRange("MSFT", DateTime.Now.AddYears(-1), DateTime.Now);
             //foreach (var row in msftRowsForLastYear)
             //{
             //    Console.WriteLine($"{row.Key}: {string.Format("{0:.00}", float.Parse(row.Value))}");
@@ -29,8 +29,10 @@ namespace StockEstimator.ConsoleApp
 
             // estimating future price
             var futureDate = DateTime.Now.AddDays(5);
-            var estimatedPrice = stockData.getEstimatedPriceForDate("MSFT", futureDate, DateTime.Now.AddMonths(-4));
-            Console.WriteLine($"Estimated price for {futureDate.ToShortDateString()} is {string.Format("{0:.00}", estimatedPrice)}");            
+            var estimatedPrice = stockData.GetEstimatedPriceForDate("MSFT", futureDate, DateTime.Now.AddMonths(-4));
+            Console.WriteLine($"Estimated price for {futureDate.ToShortDateString()} is {string.Format("{0:.00}", estimatedPrice)}");
+
+            StockCharts.DrawLine();
         }
     }
 }

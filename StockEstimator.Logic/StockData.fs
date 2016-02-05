@@ -4,7 +4,10 @@ open FSharp.Data
 open MathNet
 open System
 
-type Stocks = CsvProvider<"Date,Open,High,Low,Close,Volume,Adj Close">
+// this module use yahoo finance API: http://www.jarloo.com/yahoo_finance/
+// for alternative API check: https://www.quandl.com/blog/api-for-stock-data
+
+type Stocks = CsvProvider<"http://ichart.finance.yahoo.com/table.csv?s=msft">
 
 type StockData() = 
 
@@ -17,28 +20,28 @@ type StockData() =
             root (startDate.Month - 1) startDate.Day startDate.Year 
                         (endDate.Month - 1) endDate.Day endDate.Year
 
-    member this.getStockData ticker =
+    member this.GetStockData ticker =
         let stockData = Stocks.Load(getBaseStockUrl ticker)
         dict (stockData.Rows |> Seq.map (fun x -> x.Date, x.Close))
 
-    member this.getStockDataForDateRange ticker (startDate:DateTime) (endDate:DateTime) =
+    member this.GetStockDataForDateRange ticker (startDate:DateTime) (endDate:DateTime) =
         let url = getUrlForDateTimeRange ticker startDate endDate
         let stockData = Stocks.Load(url)
         dict (stockData.Rows |> Seq.map (fun x -> x.Date, x.Close))
 
-    member this.getEstimatedPriceForDate (ticker, forDate: DateTime, fromDate: DateTime) =
+    member this.GetEstimatedPriceForDate (ticker, forDate: DateTime, fromDate: DateTime) =
         //// uncomment below when forDate and fromDate are optional (?forDate, ?fromDate)
         //let forDate = defaultArg forDate (DateTime.Now.AddDays(1.))
         //let fromDate = defaultArg fromDate (DateTime.Now.AddYears(-1))
 
         let stockData = Stocks.Load(getUrlForDateTimeRange ticker fromDate (DateTime.Now)).Rows
 
-        let firstDate = DateTime.Parse((stockData |> Seq.last).Date)
+        let firstDate = (stockData |> Seq.last).Date
         
         // refactor to one-liner
-        let adjData = stockData |> Seq.map (fun x -> ((DateTime.Parse(x.Date) - firstDate).TotalDays, float x.Close)) 
-        let xData = adjData |> Seq.map (fun x -> fst x) |> Seq.toArray
-        let yData = adjData |> Seq.map (fun x -> snd x) |> Seq.toArray
+        let adjData = stockData |> Seq.map (fun x -> (x.Date - firstDate).TotalDays, float x.Close)
+        let xData = adjData |> Seq.map fst |> Seq.toArray
+        let yData = adjData |> Seq.map snd |> Seq.toArray
 
         let forDateInDays = (forDate - firstDate).TotalDays
 
