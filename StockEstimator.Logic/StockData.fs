@@ -48,3 +48,8 @@ type StockData() =
         
         let result = forDateInDays*slope + intercept
         result
+
+    member this.GetEstimatedPriceForDateWithRandom (ticker, forDate: DateTime, fromDate: DateTime) =
+        let price = this.GetEstimatedPriceForDate (ticker, forDate, fromDate)
+        price - (price*0.05) + (float (price*0.1*Random().NextDouble()))
+        

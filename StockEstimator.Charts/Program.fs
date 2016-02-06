@@ -1,7 +1,12 @@
-﻿open System
+﻿module MainApp
+
+open System
+open System.Net
 open System.Windows.Forms
 open FSharp.Charting
 open StockEstimator.Logic
+open System.Drawing
+open StockEstimator.Charts
 
 [<EntryPoint>]
 [<STAThread>]
@@ -13,11 +18,12 @@ let main argv =
     let stockData = StockData()
 
     let estimateBasedOnLastYearsCount = 2
+    let estimateFutureDaysCount = 365
+        
+    let chartsDrawing = ChartsDrawing()
+    let estimateFrom = DateTime.Now.AddYears(-estimateBasedOnLastYearsCount)
+    let estimateTill = DateTime.Now.AddDays(float estimateFutureDaysCount)
+    let chart = chartsDrawing.DrawEstimate "msft" estimateFrom estimateTill
 
-    let data = stockData.GetStockDataForDateRange "msft" (DateTime.Now.AddYears(-estimateBasedOnLastYearsCount)) DateTime.Now
-
-    let lst = [ for x in data -> (x.Key, x.Value)] @ [ for x in 1..365 -> (DateTime.Now.AddDays(float x), decimal (stockData.GetEstimatedPriceForDate ("msft", (DateTime.Now.AddDays(float x)), (DateTime.Now.AddYears(-estimateBasedOnLastYearsCount)))))]
- 
-    Application.Run (Chart.Line(lst).ShowChart());
- 
-    0 
+    Application.Run(chart.ShowChart());
+    0
