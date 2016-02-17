@@ -24,10 +24,10 @@ module StockDataTests =
         let firstValue = data.Values.First()
 
         // Assert
-        Assert.Equal(DateTime.Now.GetType(), firstKey.GetType())
-        Assert.Equal((decimal 1).GetType(), firstValue.GetType())
-        firstKey |> should be ofExactType<DateTime>
-        firstValue |> should be ofExactType<decimal>
+        Assert.Equal(DateTime.Now.GetType(), firstKey.GetType())    // xunit
+        Assert.Equal((decimal 1).GetType(), firstValue.GetType())   // xunit
+        firstKey |> should be ofExactType<DateTime>     // fsunit
+        firstValue |> should be ofExactType<decimal>    // fsunit
 
 
     [<Theory>]
@@ -48,9 +48,9 @@ module StockDataTests =
         let data = stockData.GetStockDataForDateRange "msft" (DateTime.Parse from) (DateTime.Parse till)
 
         // Assert
-        Assert.Equal(expectedRowCount, data.Count)
+        Assert.Equal(expectedRowCount, data.Count)  // xunit
         data.Count |> should equal expectedRowCount // fsunit: https://fsprojects.github.io/FsUnit/#What-is-FsUnit
-        test <@ expectedRowCount = data.Count @>
+        test <@ expectedRowCount = data.Count @>    // unquote
 
     [<Theory>]
     [<InlineData(1)>]
