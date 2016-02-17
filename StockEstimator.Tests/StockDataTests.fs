@@ -6,6 +6,7 @@ open StockEstimator.Logic
 module StockDataTests =
     open Xunit
     open FsUnit.Xunit
+    open FsCheck
     open FsCheck.Xunit
     open System.Linq
     open Swensen.Unquote
@@ -23,8 +24,8 @@ module StockDataTests =
         // Assert
         Assert.Equal(DateTime.Now.GetType(), firstKey.GetType())
         Assert.Equal((decimal 1).GetType(), firstValue.GetType())
-        //firstKey |> should be ofExactType<DateTime>   // throws MissingMethodException
-        //firstValue |> should be ofExactType<decimal>    // throws MissingMethodException       
+        firstKey |> should be ofExactType<DateTime>   // throws MissingMethodException in xunit 2
+        firstValue |> should be ofExactType<decimal>    // throws MissingMethodException in xunit 2
 
 
     [<Theory>]
@@ -47,7 +48,7 @@ module StockDataTests =
         // Assert
         Assert.Equal(expectedRowCount, data.Count)
         data.Count |> should equal expectedRowCount // fsunit: https://fsprojects.github.io/FsUnit/#What-is-FsUnit
-        // test <@ expectedRowCount = data.Count @> // throws MissingMethodException
+        test <@ expectedRowCount = data.Count @> // throws MissingMethodException
 
     [<Theory>]
     [<InlineData(1)>]
@@ -71,16 +72,16 @@ module StockDataTests =
 
     // property-based style
     type Days =
-        static member Int() =
-            FsCheck.Arb.Default.Int32()
-            |> FsCheck.Arb.filter (fun i -> i > 0)
+        static member Int32() =
+            Arb.Default.Int32()
+            |> Arb.filter (fun i -> i > 0 && i < 365)
 
-    type DayProperty () =
+    type DayPropertyAttribute() =
         inherit PropertyAttribute(Arbitrary = [| typeof<Days> |])
 
     //[<Property(Arbitrary = [| typeof<Days> |])>]
     [<DayProperty>]
-    let ``GetEstimatedPriceForDateWithRandom returns price greater or less by 5% from GetEstimatedPriceForDate (property style)`` (addDays: int) =
+    let ``GetEstimatedPriceForDateWithRandom returns price greater or less by 5% from GetEstimatedPriceForDate (property style)`` (addDays: Int32) =
         // Arrange
         let stockData = StockData()
         let targetDay = DateTime.Now.AddDays(float addDays)
@@ -90,5 +91,5 @@ module StockDataTests =
         let estimatedPrice = stockData.GetEstimatedPriceForDate("msft", targetDay, lookBackTill)
         let estimatedPriceWithRandom = stockData.GetEstimatedPriceForDateWithRandom("msft", targetDay, lookBackTill)
 
-        // Assert
+        // Assert        
         estimatedPriceWithRandom |> should (equalWithin (estimatedPrice*0.05)) estimatedPrice
