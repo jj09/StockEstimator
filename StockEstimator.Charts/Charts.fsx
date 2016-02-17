@@ -1,5 +1,5 @@
 ﻿#load @"..\packages\FSharp.Charting.0.90.13\FSharp.Charting.fsx"
-#load @"..\packages\MathNet.Numerics.FSharp.3.10.0\MathNet.Numerics.fsx"
+#load @"..\packages\MathNet.Numerics.FSharp.3.11.0\MathNet.Numerics.fsx"
 #r @"..\packages\FSharp.Data.2.2.5\lib\net40\FSharp.Data.dll"
 #r @"..\StockEstimator.Logic\bin\Debug\StockEstimator.Logic.dll"
 

@@ -3,6 +3,8 @@
 open System
 open StockEstimator.Logic
 
+// fix for MissingMethod Exception: https://github.com/SwensenSoftware/unquote/issues/119
+
 module StockDataTests =
     open Xunit
     open FsUnit.Xunit
@@ -24,8 +26,8 @@ module StockDataTests =
         // Assert
         Assert.Equal(DateTime.Now.GetType(), firstKey.GetType())
         Assert.Equal((decimal 1).GetType(), firstValue.GetType())
-        firstKey |> should be ofExactType<DateTime>   // throws MissingMethodException in xunit 2
-        firstValue |> should be ofExactType<decimal>    // throws MissingMethodException in xunit 2
+        firstKey |> should be ofExactType<DateTime>
+        firstValue |> should be ofExactType<decimal>
 
 
     [<Theory>]
@@ -36,8 +38,8 @@ module StockDataTests =
     [<InlineData("2016-01-23", "2016-01-31", 5)>]
     [<InlineData("2016-01-22", "2016-01-31", 6)>]
     [<InlineData("2016-01-22", "2016-02-01", 7)>]
-    [<InlineData("2016-01-01", "2016-01-31", 19)>]  // New Year, MLK
-    [<InlineData("2016-01-16", "2016-01-17", 0)>]   // wekend
+    [<InlineData("2016-01-01", "2016-01-31", 19)>]  // Stock marked closed on New Year's Day and MLK Day
+    [<InlineData("2016-01-16", "2016-01-17", 0)>]   // weekend
     let ``GetStockDataForDateRange returns correct number of results`` from till expectedRowCount =
         // Arrange
         let stockData = StockData()        
@@ -48,7 +50,7 @@ module StockDataTests =
         // Assert
         Assert.Equal(expectedRowCount, data.Count)
         data.Count |> should equal expectedRowCount // fsunit: https://fsprojects.github.io/FsUnit/#What-is-FsUnit
-        test <@ expectedRowCount = data.Count @> // throws MissingMethodException
+        test <@ expectedRowCount = data.Count @>
 
     [<Theory>]
     [<InlineData(1)>]
@@ -79,7 +81,7 @@ module StockDataTests =
     type DayPropertyAttribute() =
         inherit PropertyAttribute(Arbitrary = [| typeof<Days> |])
 
-    //[<Property(Arbitrary = [| typeof<Days> |])>]
+    //[<Property(Arbitrary = [| typeof<Days> |])>]  // alternative for DayPropertyAttribute definition
     [<DayProperty>]
     let ``GetEstimatedPriceForDateWithRandom returns price greater or less by 5% from GetEstimatedPriceForDate (property style)`` (addDays: Int32) =
         // Arrange
