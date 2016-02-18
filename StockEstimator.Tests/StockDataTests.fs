@@ -16,10 +16,9 @@ module StockDataTests =
     [<Fact>]
     let ``returns stock data in correct format`` () =
         // Arrange
-        let stockData = StockData()        
 
         // Act
-        let data = stockData.GetStockData "msft"
+        let data = StockData.GetStockData "msft"
         let firstKey = Enumerable.ToList(data.Keys).[0]
         let firstValue = data.Values.First()
 
@@ -42,10 +41,9 @@ module StockDataTests =
     [<InlineData("2016-01-16", "2016-01-17", 0)>]   // weekend
     let ``GetStockDataForDateRange returns correct number of results`` from till expectedRowCount =
         // Arrange
-        let stockData = StockData()        
 
         // Act
-        let data = stockData.GetStockDataForDateRange "msft" (DateTime.Parse from) (DateTime.Parse till)
+        let data = StockData.GetStockDataForDateRange "msft" (DateTime.Parse from) (DateTime.Parse till)
 
         // Assert
         Assert.Equal(expectedRowCount, data.Count)  // xunit
@@ -61,13 +59,12 @@ module StockDataTests =
     [<InlineData(365)>]
     let ``GetEstimatedPriceForDateWithRandom returns price greater or less by 5% from GetEstimatedPriceForDate`` (addDays: int) =
         // Arrange
-        let stockData = StockData()
         let targetDay = DateTime.Now.AddDays(float addDays)
         let lookBackTill = DateTime.Now.AddYears(-1)
 
         // Act
-        let estimatedPrice = stockData.GetEstimatedPriceForDate("msft", targetDay, lookBackTill)
-        let estimatedPriceWithRandom = stockData.GetEstimatedPriceForDateWithRandom("msft", targetDay, lookBackTill)
+        let estimatedPrice = StockData.GetEstimatedPriceForDate("msft", targetDay, lookBackTill)
+        let estimatedPriceWithRandom = StockData.GetEstimatedPriceForDateWithRandom("msft", targetDay, lookBackTill)
 
         // Assert
         estimatedPriceWithRandom |> should (equalWithin (estimatedPrice*0.05)) estimatedPrice
@@ -85,13 +82,48 @@ module StockDataTests =
     [<DayProperty>]
     let ``GetEstimatedPriceForDateWithRandom returns price greater or less by 5% from GetEstimatedPriceForDate (property style)`` (addDays: Int32) =
         // Arrange
-        let stockData = StockData()
         let targetDay = DateTime.Now.AddDays(float addDays)
         let lookBackTill = DateTime.Now.AddYears(-1)
 
         // Act
-        let estimatedPrice = stockData.GetEstimatedPriceForDate("msft", targetDay, lookBackTill)
-        let estimatedPriceWithRandom = stockData.GetEstimatedPriceForDateWithRandom("msft", targetDay, lookBackTill)
+        let estimatedPrice = StockData.GetEstimatedPriceForDate("msft", targetDay, lookBackTill)
+        let estimatedPriceWithRandom = StockData.GetEstimatedPriceForDateWithRandom("msft", targetDay, lookBackTill)
 
         // Assert        
         estimatedPriceWithRandom |> should (equalWithin (estimatedPrice*0.05)) estimatedPrice
+
+    [<Theory>]
+    [<InlineData("2017-02-06", "2017-02-06", 1)>]
+    [<InlineData("2017-02-06", "2017-02-07", 2)>]
+    [<InlineData("2017-02-06", "2017-02-10", 5)>]
+    let ``GetEstimatedPriceForDateRange returns correct number of results`` startDate endDate expectedRowCount =
+        // Arrange
+        let startDateTime = DateTime.Parse startDate
+        let endDateTime = DateTime.Parse endDate
+        let lookBackTill = DateTime.Now.AddYears(-1)
+
+        // Act
+        let data = StockData.GetEstimatedPriceForDateRange("msft", startDateTime, endDateTime, lookBackTill)
+
+        // Assert
+        Assert.Equal(expectedRowCount, data.Count())  // xunit
+        data.Count() |> should equal expectedRowCount // fsunit: https://fsprojects.github.io/FsUnit/#What-is-FsUnit
+        test <@ expectedRowCount = data.Count() @>    // unquote
+
+    [<Theory>]
+    [<InlineData("2017-02-06", "2017-02-06", 1)>]
+    [<InlineData("2017-02-06", "2017-02-07", 2)>]
+    [<InlineData("2017-02-06", "2017-02-10", 5)>]
+    let ``GetEstimatedPriceForDateRangeWithRandom returns correct number of results`` startDate endDate expectedRowCount =
+        // Arrange
+        let startDateTime = DateTime.Parse startDate
+        let endDateTime = DateTime.Parse endDate
+        let lookBackTill = DateTime.Now.AddYears(-1)
+
+        // Act
+        let data = StockData.GetEstimatedPriceForDateRangeWithRandom("msft", startDateTime, endDateTime, lookBackTill)
+
+        // Assert
+        Assert.Equal(expectedRowCount, data.Count())  // xunit
+        data.Count() |> should equal expectedRowCount // fsunit: https://fsprojects.github.io/FsUnit/#What-is-FsUnit
+        test <@ expectedRowCount = data.Count() @>    // unquote
