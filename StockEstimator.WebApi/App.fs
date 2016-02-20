@@ -9,6 +9,9 @@ open Suave.RequestErrors
 open StockEstimator.Logic
 open Newtonsoft.Json
 open Newtonsoft.Json.Serialization
+open Suave.Operators
+open Suave.Writers
+open Suave.Successful
 
 let JSON v =
   let jsonSerializerSettings = new JsonSerializerSettings()
@@ -39,9 +42,13 @@ let getPriceForDateRangeRequest =
             | Choice2Of2 msg -> BAD_REQUEST msg))
         | Choice2Of2 msg -> BAD_REQUEST msg)
 
+let setCORSHeaders =
+    setHeader  "Access-Control-Allow-Origin" "*"
+    >=> setHeader "Access-Control-Allow-Headers" "content-type"
+
 let webPart = 
     choose [
-        GET >=> choose [
+        GET >=> setCORSHeaders >=> choose [
             path "/" >=> Files.file "index.html"
 
             path "/GetPrice" >=> getPrice
