@@ -11,7 +11,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StockEstimator.Charts", "St
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StockEstimator.Tests", "StockEstimator.Tests\StockEstimator.Tests.fsproj", "{24D58CF7-73C8-4968-B637-AF238FEE2C57}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StockEstimator.Web", "StockEstimator.Web\StockEstimator.Web.fsproj", "{ED9AC7A7-62E3-4BF8-97B9-E76CDD3D6EAE}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StockEstimator.WebApi", "StockEstimator.WebApi\StockEstimator.WebApi.fsproj", "{ED9AC7A7-62E3-4BF8-97B9-E76CDD3D6EAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
