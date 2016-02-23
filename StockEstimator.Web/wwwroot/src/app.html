@@ -1,0 +1,27 @@
+<template>
+  <require from="nav-bar.html"></require>
+  <require from="bootstrap/css/bootstrap.css"></require>
+  <nav-bar router.bind="router"></nav-bar>
+
+  <div class="page-host">
+  	<div class="container">
+        <div class="row">
+    		<router-view></router-view>
+    	</div>
+    </div>
+
+    <footer class="navbar-bottom">
+	    <div class="container">
+	        <div class="row">
+	        	<hr />
+	        	<div class="text-muted lead" style="display: flex; align-items: center; justify-content: center;">
+        			<img src="images/aurelia.svg" style="margin-right: 10px" />
+	        		&copy;
+	            	This web app is built with&nbsp;<a href="http://aurelia.io">Aurelia Framework</a>.
+            	</div>
+	        </div>
+	    </div>
+	</footer>
+  </div>	
+  
+</template>
