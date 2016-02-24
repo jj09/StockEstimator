@@ -17,7 +17,6 @@ This library use linear regression for estimating future stock prices based on t
 
 ## TODO
 
-* Add charts to StockEstimator.Web
 * Refactor logic to perform one request per estimate range
 * Add more advanced algorithms for estimating stock prices
 * Deploy to Azure
