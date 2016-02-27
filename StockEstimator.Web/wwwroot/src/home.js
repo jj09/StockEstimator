@@ -32,29 +32,53 @@ export class Home {
 
   getData() {
     console.log('getting future', this.ticker, 'prices till', this.till, 'based on data since', this.since);
+    this.isLoading(true);
     return this.http.fetch(`GetPriceForDateRange?ticker=${this.ticker}&since=${this.since}&till=${this.till}`)
       .then(response => response.json())
       .then(prices => {
         this.prices = prices;
         this.estimatedPrice = prices[prices.length-1].item2;
       })
-      .then(() => this.drawChart());
+      .then(() => {
+        this.drawChart();
+        this.isLoading(false);
+      });
+  }
+
+  isLoading(isLoading) {
+    $('#getDataButton').prop('disabled', isLoading);
+
+    let $formControls = $('.form-control');
+
+    if (isLoading) {
+      $formControls.attr('disabled', 'disabled');
+    } else {
+      $formControls.removeAttr('disabled');
+    }
+    
   }
 
   activate() {
-    //return this.getData();
+    // run before view rendering
   }
 
   // the component is attached to the DOM (in document). 
   // If the view-model has an attached callback, it will be invoked at this time.
   // http://aurelia.io/docs.html#/aurelia/framework/1.0.0-beta.1.1.3/doc/article/cheat-sheet
   attached() {
-    $("#date-till").datepicker();
+    $("#date-till").datepicker({
+      onSelect: (selected, evt) => {
+        this.till = selected.toString();
+      }
+    });
     $("#date-till").datepicker("setDate", new Date(this.till));
-    $("#date-till").blur(() => this.getData());
-    $("#date-since").datepicker();
+    
+    $("#date-since").datepicker({
+      onSelect: (selected, evt) => {
+        this.since = selected.toString();
+      }
+    });
     $("#date-since").datepicker("setDate", new Date(this.since));
-    $("#date-since").blur(() => this.getData());
 
     this.getData();
   }

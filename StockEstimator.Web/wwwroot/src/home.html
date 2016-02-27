@@ -1,7 +1,4 @@
-<template>
-  <!-- good themes: flick or smoothness -->
-  <link rel="stylesheet" href="jspm_packages/github/components/jqueryui%401.11.4/themes/smoothness/jquery-ui.min.css">
-  
+<template>  
   <require from="blur-image"></require>
   <section class="au-animate">
     <h2>${heading}</h2>
@@ -33,7 +30,7 @@
               </div>
             </form>
 
-            <button click.trigger="getData()" class="btn btn-primary btn-lg">Get data</button>
+            <button click.trigger="getData()" class="btn btn-primary btn-lg" id="getDataButton">Get data</button>
 
             <br /><br />
 
