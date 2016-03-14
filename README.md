@@ -18,6 +18,7 @@ This library use linear regression for estimating future stock prices based on t
 ## TODO
 
 * Refactor logic to perform one request per estimate range
+* Prettify UI
 * Add more advanced algorithms for estimating stock prices
 * Deploy to Azure
 * Deploy to Heroku
