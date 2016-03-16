@@ -20,7 +20,7 @@ This library use linear regression for estimating future stock prices based on t
 * Refactor logic to perform one request per estimate range
 * Prettify UI
 * Add more advanced algorithms for estimating stock prices
-* Deploy to Azure
+* Deploy to Azure (as <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/quick_start/azure_setup">Windows Container</a>)
 * Deploy to Heroku
 * add real-time prices for current day (i.e. refresh result every 10(?) seconds to get latest price) - will be visible when estimating based on last 1-2 days)
 * add caching results on server-side
