@@ -10,7 +10,7 @@ export class Home {
   heading = 'Estimating future stock prices';
 
   @bindable ticker = "msft";
-  @bindable till = "2016-03-11";
+  @bindable till = "2016-09-11";
   @bindable since = "2015-01-11";
   tickers = ["msft", "googl", "amzn", "aapl"];
 
