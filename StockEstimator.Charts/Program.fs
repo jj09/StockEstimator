@@ -14,7 +14,7 @@ let main argv =
  
     let estimateBasedOnLastYearsCount = 2
     let estimateFutureDaysCount = 365
-        
+
     let chartsDrawing = ChartsDrawing()
     let estimateFrom = DateTime.Now.AddYears(-estimateBasedOnLastYearsCount)
     let estimateTill = DateTime.Now.AddDays(float estimateFutureDaysCount)
