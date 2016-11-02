@@ -67,7 +67,7 @@ module StockDataTests =
         let estimatedPriceWithRandom = StockData.GetEstimatedPriceForDateWithRandom("msft", targetDay, lookBackTill)
 
         // Assert
-        estimatedPriceWithRandom |> should (equalWithin (estimatedPrice*0.05)) estimatedPrice
+        estimatedPriceWithRandom |> should (equalWithin (estimatedPrice*0.05)) estimatedPrice   // fsunit
 
     // property-based style
     type Days =
@@ -90,7 +90,7 @@ module StockDataTests =
         let estimatedPriceWithRandom = StockData.GetEstimatedPriceForDateWithRandom("msft", targetDay, lookBackTill)
 
         // Assert        
-        estimatedPriceWithRandom |> should (equalWithin (estimatedPrice*0.05)) estimatedPrice
+        estimatedPriceWithRandom |> should (equalWithin (estimatedPrice*0.05)) estimatedPrice   // fsunit
 
     [<Theory>]
     [<InlineData("2017-02-06", "2017-02-06", 1)>]
