@@ -54,7 +54,7 @@ let GetEstimatedPriceForDateRange (ticker, startDate: DateTime, endDate: DateTim
         for i in 0..daysCount do
             let dateTime = startDate.AddDays(float i)
             let price = GetEstimatedPriceForDate (ticker, dateTime, fromDate)
-            yield (dateTime, price - (price*0.05) + (float (price*0.1*Random().NextDouble())))
+            yield (dateTime, price)
     }
 
 let GetEstimatedPriceForDateRangeWithRandom (ticker, startDate: DateTime, endDate: DateTime, fromDate: DateTime) =
@@ -63,5 +63,5 @@ let GetEstimatedPriceForDateRangeWithRandom (ticker, startDate: DateTime, endDat
         for i in 0..daysCount do
             let dateTime = startDate.AddDays(float i)
             let price = GetEstimatedPriceForDateWithRandom (ticker, dateTime, fromDate)
-            yield (dateTime, price - (price*0.05) + (float (price*0.1*Random().NextDouble())))
+            yield (dateTime, price)
     }
