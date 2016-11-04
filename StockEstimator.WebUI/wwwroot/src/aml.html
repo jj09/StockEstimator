@@ -1,0 +1,14 @@
+<template>
+    <section class="au-animate">
+    <h2>${heading}</h2>
+    <div class="form-group">
+        <label for="till">Get estimated price for:</label>
+        <input type="text" id="estimate-for" class="form-control" value.bind="estimateFor" />
+    </div>
+    
+    <button click.trigger="getPrice()" class="btn btn-primary btn-lg" id="getPriceButton">Get price</button>
+
+    Estimated price for <strong>MSFT</strong> on <strong>${estimateFor}</strong> is <mark><strong>${estimatedPrice | currency}</strong></mark>
+
+  </section>
+</template>
