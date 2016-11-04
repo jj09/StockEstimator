@@ -1,10 +1,19 @@
 <template>
     <section class="au-animate">
     <h2>${heading}</h2>
-    <div class="form-group">
-        <label for="till">Get estimated price for:</label>
-        <input type="text" id="estimate-for" class="form-control" value.bind="estimateFor" />
-    </div>
+    
+    <form>
+        <div class="form-group">
+        <label for="experiment">Experiment:</label>
+        <select name="experiment" id="experiment" class="form-control" value.bind="experiment">
+            <option repeat.for="name of experiments">${name}</option>
+        </select>
+        </div>
+        <div class="form-group">
+            <label for="till">Get estimated price for:</label>
+            <input type="text" id="estimate-for" class="form-control" value.bind="estimateFor" />
+        </div>
+    </form>
     
     <button click.trigger="getPrice()" class="btn btn-primary btn-lg" id="getPriceButton">Get price</button>
 

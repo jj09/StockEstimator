@@ -45,12 +45,25 @@ let getPriceForDateRangeRequest =
         | Choice2Of2 msg -> BAD_REQUEST msg)
 
 let getPriceFromAzure =
-    request (fun r ->
-        match r.queryParam "date" with
-        | Choice1Of2 date -> Http.RequestString("https://ussouthcentral.services.azureml.net/workspaces/03f600fc9ca34cc9a692c2aeea610df0/services/cdbf8d1e5f6d4aa396518a6bfe4bef52/execute?api-version=2.0&format=swagger", 
-            headers = [ContentType HttpContentTypes.Json; Authorization "Bearer <TOKEN>" ],
-            body = TextRequest (sprintf """ {"Inputs": { "input1": [{'Date': "%s"}]}, "GlobalParameters":  {}} """ date)) |> JSON
+    // from https://www.reddit.com/r/programming/comments/4ee3s7/getting_started_with_f/
+    let bind name nextStep = request (fun r -> 
+        match r.queryParam name with
+        | Choice1Of2 value -> nextStep value
         | Choice2Of2 msg -> BAD_REQUEST msg)
+
+    let experiments = dict[
+        "msft", ("9a21fffe27f34d6b90ab83a9a28af1f5", "9LqHbhrox5Bq05Eqwb4+0dg+7S9avXEsse03xUKhRBAc4Paz7I6KzB9/k9sXYnD1db61HzubiYuB4jp3IXd6ew=="); 
+        "msft(2015-11-04 to 2016-11-03)", ("08c4ee6a411145fca9973c2fd3a8fad6", "GHWmBkKaEXMVi5bifrYSi1h0BqIwD5ccopEm8E4RZqbTidwQAZVf1vQikDoITAR8LFVP9AH3ObxzN+0NpotXOw=="); 
+        "msft(2016-10-04 to 2016-11-03)", ("cdbf8d1e5f6d4aa396518a6bfe4bef52", "UbkxG8mVjv9Keyn2iKh+G2rzUGROrbfZuZ9dtQyTGH4Nrq/cZ10BUpm1OL348YsJJf9mLPJQXBi/JatUDiHEGw==")];
+
+    bind "date" <| fun date -> 
+    bind "experiment" <| fun experiment -> 
+        let service = fst (experiments.Item(experiment))
+        let token = snd (experiments.Item(experiment))
+        Http.RequestString(sprintf "https://ussouthcentral.services.azureml.net/workspaces/03f600fc9ca34cc9a692c2aeea610df0/services/%s/execute?api-version=2.0&format=swagger" service, 
+        headers = [ContentType HttpContentTypes.Json; Authorization (sprintf "Bearer %s" token) ],
+        body = TextRequest (sprintf """ {"Inputs": { "input1": [{'Date': "%s"}]}, "GlobalParameters":  {}} """ date)) |> JSON
+
 
 let setCORSHeaders =
     setHeader  "Access-Control-Allow-Origin" "*"
