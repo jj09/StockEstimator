@@ -11,7 +11,7 @@ type Stocks = CsvProvider<"http://ichart.finance.yahoo.com/table.csv?s=msft">
 
 let getBaseStockUrl ticker =
     "http://ichart.finance.yahoo.com/table.csv?s=" + ticker
-    
+
 let getUrlForDateTimeRange ticker (startDate:DateTime) (endDate:DateTime) = 
     let root = getBaseStockUrl ticker
     sprintf "%s&a=%i&b=%i&c=%i&d=%i&e=%i&f=%i" 
@@ -32,10 +32,11 @@ let GetEstimatedPriceForDate (ticker, forDate: DateTime, fromDate: DateTime) =
 
     let firstDate = (stockData |> Seq.last).Date
         
-    // TODO: refactor to one-liner
-    let adjData = stockData |> Seq.map (fun x -> (x.Date - firstDate).TotalDays, float x.Close)
-    let xData = adjData |> Seq.map fst |> Seq.toArray
-    let yData = adjData |> Seq.map snd |> Seq.toArray
+    let xData, yData = 
+        stockData 
+        |> Seq.map (fun x -> (x.Date - firstDate).TotalDays, float x.Close)
+        |> Seq.toArray 
+        |> Array.unzip
 
     let forDateInDays = (forDate - firstDate).TotalDays
 
@@ -46,7 +47,7 @@ let GetEstimatedPriceForDate (ticker, forDate: DateTime, fromDate: DateTime) =
 
 let GetEstimatedPriceForDateWithRandom (ticker, forDate: DateTime, fromDate: DateTime) =
     let price = GetEstimatedPriceForDate (ticker, forDate, fromDate)
-    price - (price*0.05) + (float (price*0.1*Random().NextDouble()))
+    price - (price*0.05) + (price*0.1*Random().NextDouble())
 
 let GetEstimatedPriceForDateRange (ticker, startDate: DateTime, endDate: DateTime, fromDate: DateTime) =
     let daysCount = int (endDate - startDate).TotalDays
