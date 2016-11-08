@@ -61,8 +61,8 @@ let getPriceFromAzure =
         let service = fst (experiments.Item(experiment))
         let token = snd (experiments.Item(experiment))
         Http.RequestString(sprintf "https://ussouthcentral.services.azureml.net/workspaces/03f600fc9ca34cc9a692c2aeea610df0/services/%s/execute?api-version=2.0&format=swagger" service, 
-        headers = [ContentType HttpContentTypes.Json; Authorization (sprintf "Bearer %s" token) ],
-        body = TextRequest (sprintf """ {"Inputs": { "input1": [{'Date': "%s"}]}, "GlobalParameters":  {}} """ date)) |> JSON
+            headers = [ContentType HttpContentTypes.Json; Authorization (sprintf "Bearer %s" token) ],
+            body = TextRequest (sprintf """ {"Inputs": { "input1": [{'Date': "%s"}]}, "GlobalParameters":  {}} """ date)) |> JSON
 
 
 let setCORSHeaders =
