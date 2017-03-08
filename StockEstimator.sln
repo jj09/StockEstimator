@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StockEstimator.Logic", "StockEstimator.Logic\StockEstimator.Logic.fsproj", "{F255F413-25DA-44C6-92F2-6481CC8065EB}"
 EndProject
@@ -13,7 +13,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StockEstimator.Tests", "Sto
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "StockEstimator.WebApi", "StockEstimator.WebApi\StockEstimator.WebApi.fsproj", "{ED9AC7A7-62E3-4BF8-97B9-E76CDD3D6EAE}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "StockEstimator.WebUI", "StockEstimator.WebUI\StockEstimator.WebUI.xproj", "{69668F2F-980C-4259-B158-D0196C7555D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockEstimator.WebUI", "StockEstimator.WebUI\StockEstimator.WebUI.csproj", "{69668F2F-980C-4259-B158-D0196C7555D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -36,8 +36,8 @@ export class Home {
     return this.http.fetch(`GetPriceForDateRange?ticker=${this.ticker}&since=${this.since}&till=${this.till}`)
       .then(response => response.json())
       .then(prices => {
-        this.prices = prices;
-        this.estimatedPrice = prices[prices.length-1].item2;
+          this.prices = prices;
+          this.estimatedPrice = prices.length > 0 ? prices[prices.length - 1].item2 : "?";
       })
       .then(() => {
         this.drawChart();
