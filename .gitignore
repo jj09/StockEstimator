@@ -248,3 +248,4 @@ Debug
 obj
 bin
 *.exe
+*.lock

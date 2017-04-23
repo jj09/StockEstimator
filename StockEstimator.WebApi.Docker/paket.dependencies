@@ -1,0 +1,6 @@
+source https://nuget.org/api/v2
+
+nuget Suave
+nuget FSharp.Data
+nuget MathNet.Numerics
+nuget Newtonsoft.Json
