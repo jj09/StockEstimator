@@ -34,12 +34,12 @@ let setCORSHeaders =
     >=> setHeader "Access-Control-Allow-Headers" "content-type"
 
 let getPrice =
-    StockEstimator.Logic.GetEstimatedPriceForDateWithRandom("msft", DateTime.Now.AddDays(float 5), DateTime.Now.AddYears(-1)) |> JSON
+    StockData.GetEstimatedPriceForDateWithRandom("msft", DateTime.Now.AddDays(float 5), DateTime.Now.AddYears(-1)) |> JSON
 
 let getPriceForDateRange ticker till since =
     let endDateTime = DateTime.Parse till
     let fromDate = DateTime.Parse since
-    StockEstimator.Logic.GetEstimatedPriceForDateRangeWithRandom(ticker, DateTime.Now, endDateTime, fromDate) |> JSON
+    StockData.GetEstimatedPriceForDateRangeWithRandom(ticker, DateTime.Now, endDateTime, fromDate) |> JSON
 
 // THIS IS AWESOME :D
 let getPriceForDateRangeRequest =
