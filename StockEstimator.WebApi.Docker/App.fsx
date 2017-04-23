@@ -92,7 +92,7 @@ let webPart =
 
 let config =
   { defaultConfig with
-       bindings = [HttpBinding.create HTTP (IPAddress.Parse "0.0.0.0") 80us]
+       bindings = [HttpBinding.create HTTP (IPAddress.Parse "0.0.0.0") 8083us]
   }
 
 let resp = "Processed by " + System.Environment.MachineName

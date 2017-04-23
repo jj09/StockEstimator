@@ -10,5 +10,5 @@ RUN         mono paket.exe install
 
 COPY . /src
 
-EXPOSE 80
+EXPOSE 8083
 CMD ["fsharpi", "App.fsx"]
