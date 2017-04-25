@@ -10,15 +10,16 @@ export class Home {
   heading = 'Estimating future stock prices';
 
   @bindable ticker = "msft";
-  @bindable till = "2016-12-11";
-  @bindable since = "2015-01-11";
+  @bindable till = this.daysFromNow(7);
+  @bindable since = "2014-09-09";
   tickers = ["msft", "googl", "amzn", "aapl"];
 
   constructor(http) {
     http.configure(config => {
       config
         .useStandardConfiguration()
-        .withBaseUrl('http://localhost:8083/');
+        .withBaseUrl('http://stockestimator.westus.cloudapp.azure.com/');
+//        .withBaseUrl('http://localhost:8083/');
     });
 
     this.http = http;
@@ -84,6 +85,10 @@ export class Home {
     this.getData();
   }
 
+  daysFromNow(days) {
+    return new Date(Date.now()+days*24*60*60*1000).toISOString().substring(0,10);
+  }
+
   drawChart() {
     let data = this.prices.map(p => {
       return { 
@@ -101,19 +106,56 @@ export class Home {
         bottom: 20,
         left: 50
       };
-    let xScale = d3.time.scale().range([MARGINS.left, WIDTH - MARGINS.right]).domain(d3.extent(data, function(d) { return d.date; }));
-    let yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain(d3.extent(data, function(d) { return d.price; }));
-    let xAxis = d3.svg.axis().scale(xScale);
-    let yAxis = d3.svg.axis().scale(yScale).orient("left");
+    let xScale = d3.time.scale()
+      .range([MARGINS.left, WIDTH - MARGINS.right])
+      .domain(d3.extent(data, function(d) { return d.date; }));
+
+    let yScale = d3.scale.linear()
+      .range([HEIGHT - MARGINS.top, MARGINS.bottom])
+      .domain(d3.extent(data, function(d) { return d.price; }));
+
+    let xAxis = d3.svg.axis()
+      .scale(xScale)
+      .orient("bottom")
+      .innerTickSize(-HEIGHT)
+      .outerTickSize(0)
+      .ticks(5)
+      .tickPadding(10);
+
+    let yAxis = d3.svg.axis()
+      .scale(yScale)
+      .orient("left")
+      .innerTickSize(-WIDTH)
+      .outerTickSize(0)
+      .tickPadding(10);
+
+    let yGrid = d3.svg.axis()
+      .scale(yScale)
+      .orient("left")
+      .tickSize(-(WIDTH-MARGINS.left-MARGINS.right), 0, 0)
+      .tickFormat("")
+      .tickPadding(50)
+      .ticks(5);
     
     vis.append("svg:g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
+        .style('fill', '#888888')
         .call(xAxis);
+
     vis.append("svg:g")
         .attr("class", "y axis")
         .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+        .style('fill', '#888888')
         .call(yAxis);
+
+    vis.append("svg:g")
+        .attr("class", "y axis")
+        .attr("class", "grid")
+        .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+        .style('fill', '#888888')
+        .call(yGrid);
+
     let lineGen = d3.svg.line()
         .x(function(d) {
             return xScale(d.date);
@@ -121,13 +163,14 @@ export class Home {
         .y(function(d) {
             return yScale(d.price);
         })
-        .interpolate("basis");
+        .interpolate("none");
+
     vis.append('svg:path')
         .datum(data)
         .attr("class", "line")
         .attr("d", lineGen)
-        .attr('stroke', 'green')
-        .attr('stroke-width', 2)
+        .attr('stroke', '#2A9FD6')
+        .attr('stroke-width', 1)
         .attr('fill', 'none');
   }
 }

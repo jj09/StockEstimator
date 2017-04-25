@@ -28,6 +28,7 @@ let GetStockDataForDateRange ticker (startDate:DateTime) (endDate:DateTime) =
     dict (stockData.Rows |> Seq.map (fun x -> x.Date, x.Close))
 
 let GetEstimatedPriceForDate (ticker, forDate: DateTime, fromDate: DateTime) =
+    // TODO: cache results!!!
     let stockData = Stocks.Load(getUrlForDateTimeRange ticker fromDate (DateTime.Now)).Rows
 
     let firstDate = (stockData |> Seq.last).Date

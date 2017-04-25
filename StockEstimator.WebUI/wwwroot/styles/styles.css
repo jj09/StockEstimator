@@ -180,3 +180,11 @@ div.au-stagger {
     stroke: #777;
     shape-rendering: crispEdges;
 }
+
+.grid .tick {
+    stroke: #555555;
+    opacity: 0.7;
+}
+.grid path {
+      stroke-width: 0;
+}

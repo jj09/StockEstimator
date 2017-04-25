@@ -4,7 +4,7 @@ import 'jquery-ui';
 
 @inject(HttpClient)
 export class Aml {
-    estimateFor = '2016-12-12';
+    estimateFor = this.daysFromNow(7); //'2016-12-12';
     estimatedPrice = '?';
     experiment = 'msft';
 
@@ -14,7 +14,8 @@ export class Aml {
         http.configure(config => {
         config
             .useStandardConfiguration()
-            .withBaseUrl('http://localhost:8083/');
+            .withBaseUrl('http://stockestimator.westus.cloudapp.azure.com/');
+//        .withBaseUrl('http://localhost:8083/');
         });
 
         this.http = http;
@@ -40,6 +41,10 @@ export class Aml {
                 this.till = selected.toString();
             }
         });
+    }
+    
+    daysFromNow(days) {
+        return new Date(Date.now()+days*24*60*60*1000).toISOString().substring(0,10);
     }
 }
 
