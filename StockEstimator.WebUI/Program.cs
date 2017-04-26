@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 
-namespace StockEstimator.UI
+namespace StockEstimator.WebUI
 {
     public class Program
     {
