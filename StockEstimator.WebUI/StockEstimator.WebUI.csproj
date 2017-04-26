@@ -20,4 +20,13 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
   </ItemGroup>
 
+  <Target Name="PrepublishScript" AfterTargets="PrepareForPublish">
+    <Exec Command="cd wwwroot &amp;&amp; npm install" />
+    <Exec Command="cd wwwroot &amp;&amp; jspm install -y" />
+    <Exec Command="cd wwwroot &amp;&amp; gulp build" />
+    <Exec Command="cd wwwroot &amp; npm install" />
+    <Exec Command="cd wwwroot &amp; jspm install -y" />
+    <Exec Command="cd wwwroot &amp; gulp build" />
+  </Target>
+
 </Project>
