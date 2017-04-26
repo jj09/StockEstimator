@@ -1,2 +1,3 @@
 [config]
 project = StockEstimator.WebUI/StockEstimator.WebUI.csproj
+command = deploy.cmd
