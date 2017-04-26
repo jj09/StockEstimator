@@ -71,11 +71,12 @@ call :ExecuteCmd dotnet restore "StockEstimator.sln"
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 2. Build and publish
-call :ExecuteCmd dotnet publish "StockEstimator.WebUI\StockEstimator.WebUI.csproj" --output "%DEPLOYMENT_TEMP%" --configuration Release
 call :ExecuteCmd cd "StockEstimator.WebUI\wwwroot"
 call :ExecuteCmd npm install
 call :ExecuteCmd jspm install -y
+call :ExecuteCmd npm install gulp
 call :ExecuteCmd gulp bundle
+call :ExecuteCmd dotnet publish "StockEstimator.WebUI\StockEstimator.WebUI.csproj" --output "%DEPLOYMENT_TEMP%" --configuration Release
 IF !ERRORLEVEL! NEQ 0 goto error
 
 :: 3. KuduSync
