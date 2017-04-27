@@ -249,3 +249,5 @@ obj
 bin
 *.exe
 *.lock
+
+StockEstimator.WebUI/wwwroot/config.js

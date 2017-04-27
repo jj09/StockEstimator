@@ -20,7 +20,8 @@
   },
   "scripts": {
     "test": "gulp test",
-    "e2e": "gulp serve webdriver-standalone e2e"
+    "e2e": "gulp serve webdriver-standalone e2e",
+    "postinstall": "jspm i -y & gulp bundle"
   },
   "devDependencies": {
     "aurelia-bundler": "^0.3.0",
@@ -30,7 +31,7 @@
     "browser-sync": "^2.10.0",
     "conventional-changelog": "0.0.11",
     "del": "^1.1.0",
-    "gulp": "^3.8.10",
+    "gulp": "^3.9.1",
     "gulp-babel": "^5.1.0",
     "gulp-bump": "^0.3.1",
     "gulp-changed": "^1.1.0",

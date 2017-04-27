@@ -1,0 +1,3 @@
+# this is for gcloud deployment
+runtime: aspnetcore
+env: flex
