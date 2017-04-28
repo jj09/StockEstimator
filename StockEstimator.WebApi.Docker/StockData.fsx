@@ -5,12 +5,15 @@ module StockEstimator.Logic.StockData
 #r "./packages/MathNet.Numerics/lib/net40/MathNet.Numerics.dll"
 
 open System
+open System.Collections.Generic
 open FSharp.Data
 
 // this module use yahoo finance API: http://www.jarloo.com/yahoo_finance/
 // for alternative API check: https://www.quandl.com/blog/api-for-stock-data
 
 type Stocks = CsvProvider<"http://ichart.finance.yahoo.com/table.csv?s=msft">
+
+let stocksCache = new Dictionary<string, Stocks>()
 
 let getBaseStockUrl ticker =
     "http://ichart.finance.yahoo.com/table.csv?s=" + ticker
@@ -21,22 +24,26 @@ let getUrlForDateTimeRange ticker (startDate:DateTime) (endDate:DateTime) =
         root (startDate.Month - 1) startDate.Day startDate.Year 
                     (endDate.Month - 1) endDate.Day endDate.Year
 
+let getStockDataForUrl url =
+    if not (stocksCache.ContainsKey(url)) then 
+        stocksCache.Add(url, Stocks.Load(url))
+    stocksCache.[url]    
+
 let GetStockData ticker =
-    let stockData = Stocks.Load(getBaseStockUrl ticker)
+    let stockData = getBaseStockUrl ticker |> getStockDataForUrl 
     dict (stockData.Rows |> Seq.map (fun x -> x.Date, x.Close))
 
 let GetStockDataForDateRange ticker (startDate:DateTime) (endDate:DateTime) =
-    let url = getUrlForDateTimeRange ticker startDate endDate
-    let stockData = Stocks.Load(url)
+    let stockData = getUrlForDateTimeRange ticker startDate endDate |> getStockDataForUrl
     dict (stockData.Rows |> Seq.map (fun x -> x.Date, x.Close))
 
 let GetEstimatedPriceForDate (ticker, forDate: DateTime, fromDate: DateTime) =
-    let stockData = Stocks.Load(getUrlForDateTimeRange ticker fromDate (DateTime.Now)).Rows
-
-    let firstDate = (stockData |> Seq.last).Date
+    let stockData = getUrlForDateTimeRange ticker fromDate (DateTime.Now) |> getStockDataForUrl
+    let stockDataRows = stockData.Rows
+    let firstDate = (stockDataRows |> Seq.last).Date
         
     let xData, yData = 
-        stockData 
+        stockDataRows 
         |> Seq.map (fun x -> (x.Date - firstDate).TotalDays, float x.Close)
         |> Seq.toArray 
         |> Array.unzip
