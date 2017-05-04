@@ -1,11 +1,9 @@
 import {inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-fetch-client';
 import {bindable} from 'aurelia-framework';
-//import 'fetch';
 import * as d3 from'd3';
 import * as $ from 'jquery';
 import 'jquery-ui-dist';
-//import { datepicker } from 'jquery-ui';
 
 @inject(HttpClient)
 export class Home {
@@ -13,6 +11,7 @@ export class Home {
   prices: any;
   http: HttpClient;
   heading = 'Estimating future stock prices';
+  baseUrl = 'http://localhost:8083';
 
   @bindable ticker = "msft";
   @bindable till = this.daysFromNow(7);
@@ -20,31 +19,63 @@ export class Home {
   tickers = ["msft", "googl", "amzn", "aapl"];
 
   constructor(http: HttpClient) {
-    http.configure(config => {
-      let baseUrl = 'http://stockestimator.westus.cloudapp.azure.com/';  // 'http://localhost:8083';
+    this.http = http;
 
-      // $.ajax({
-      //     type: 'POST',
-      //     url: 'http://stockestimator.westus.cloudapp.azure.com/',
-      //   success: function() {
-      //     console.log('Using Azure API');
-      //     baseUrl = 'http://stockestimator.westus.cloudapp.azure.com/';
-      //   },
-      //   error: function() {
-      //     console.log('Azure does not work. Falling back to gcloud');
-      //     baseUrl = 'http://104.196.239.135/';
-      //   }
-      // });
+    this.isApiAvailable('http://localhost:8083')
+      .then(isAvailable => {
+        if (isAvailable) {
+          throw new Error('available api found');
+        }
+        
+        this.isApiAvailable('http://stockestimator.westus.cloudapp.azure.com')
+          .then(isAvailable => {
+            if (isAvailable) {
+              this.baseUrl = 'http://stockestimator.westus.cloudapp.azure.com';
+              throw new Error('available api found');
+            }
+            
+            this.isApiAvailable('http://104.196.239.135')
+              .then(isAvailable => {
+                if (isAvailable) {
+                  this.baseUrl = 'http://104.196.239.135';
+                  throw new Error('available api found');
+                }      
+              })
+              .catch(() => this.configureHttp())
+          })
+          .catch(() => this.configureHttp())
+      })
+      .catch(() => this.configureHttp());
+  }
 
+  configureHttp() {
+    if (this.baseUrl[this.baseUrl.length-1] !== '/') {
+      this.baseUrl += '/';
+    }
+
+    this.http.configure(config => {
       config
         .useStandardConfiguration()
-        .withBaseUrl(baseUrl);
+        .withBaseUrl(this.baseUrl);
     });
 
-    this.http = http;
+    this.getData();
+  }
+
+  isApiAvailable(url) {
+    return this.http.fetch(url)
+      .then(result => {
+        console.info('API url:', url);
+        return true;
+      })
+      .catch(err => {
+        console.error('API not available:', url);
+        return false;
+      });
   }
 
   propertyChanged(propertyName, newValue, oldValue) { 
+    // for now - do not refresh with every prop changed, rather wait for 'Get Data' to be clicked
     if (["ticker", "till", "since"].indexOf(propertyName) !== -1) {
       //this.getData();
     }
@@ -54,7 +85,9 @@ export class Home {
     console.log('getting future', this.ticker, 'prices till', this.till, 'based on data since', this.since);
     this.isLoading(true);
     return this.http.fetch(`GetPriceForDateRange?ticker=${this.ticker}&since=${this.since}&till=${this.till}`)
-      .then(response => response.json())
+      .then(response => {
+        return response.json();
+      })
       .then((prices: any) => {
           this.prices = prices;
           this.estimatedPrice = prices.length > 0 ? prices[prices.length - 1].item2 : "?";
@@ -101,7 +134,7 @@ export class Home {
     });
     $("#date-since").datepicker("setDate", new Date(this.since));
 
-    this.getData();
+    //this.getData();
   }
 
   daysFromNow(days) {
@@ -115,6 +148,7 @@ export class Home {
         date: new Date(p.item1)
       };
     });
+
     $("#visualisation").empty();
     let vis = d3.select("#visualisation");
     const WIDTH = 600;
