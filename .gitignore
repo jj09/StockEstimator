@@ -250,4 +250,8 @@ bin
 *.exe
 *.lock
 
+# Aurelia
+
+.DS_STORE
 StockEstimator.WebUI/wwwroot/config.js
+StockEstimator.WebUI/wwwroot/scripts/
